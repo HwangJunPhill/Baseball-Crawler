@@ -14,26 +14,22 @@ profile = {}
 
 
 class basic():
-    na = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
-          'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778542']
+    def __init__(self, link):
+        self.url = link[0]
+        self.respose = requests.get(self.url)
+        self.html = etree.HTML(self.respose.text)
 
-    park = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778528',
-            'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778528']
+        self.url2 = link[1]
+        self.respose = requests.get(self.url2)
+        self.html2 = etree.HTML(self.respose.text)
 
-    url = park[0]
-    respose = requests.get(url)
-    html = etree.HTML(respose.text)
-
-    url2 = park[1]
-    respose = requests.get(url2)
-    html2 = etree.HTML(respose.text)
-
-    name = html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong')[0].text
+        self.name = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong')[0].text
 
     # 프로필
     def crawl_profile(self):
         profile['이름'] = self.name
         profile['배번'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong/span[1]')[0].text
+
         for x in range(5):
             profile_label = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[3]/dl[{}]/dt'.format(x))
             profile_value = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[3]/dl[{}]/dd'.format(x))
@@ -76,7 +72,9 @@ class basic():
         if len(rows) == 1:
             key['key'] = 2
         else:
-            key['key'] = rows[len(rows)][0]
+            print(rows)
+            print(len(rows))
+            #key['key'] = rows[len(rows)][0]
 
     # 시즌 기록
     def crawl_season(self):
@@ -109,9 +107,6 @@ class basic():
         else:
             for x in range(len(rows)):
                 if key['key'] == rows[x][0]:
-                    #이미있음
-                    #추가 x 수정 o
-                    #UPDATE `sports`.`season_record` SET `경기`='234', `타석`='34' WHERE  `No`=2;
                     sql = """
                     UPDATE `sports`.`season_record` SET `경기` = %(경기)s, `타석` = %(타석)s, `타수` = %(타수)s, `안타` = %(안타)s, `2루타` = %(2루타)s, `3루타` = %(3루타)s, `홈런` = %(홈런)s, `타점` = %(타점)s, `득점` = %(득점)s, `도루` = %(도루)s, `사사구` = %(사사구)s, `삼진` = %(삼진)s, `타율` = %(타율)s, `출루율` = %(출루율)s, `장타율` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
                     """
@@ -174,9 +169,23 @@ class basic():
 
             return
 
-        elif rows[len(rows)-1][0] == key['key'] and str(rows[len(rows)-1][1]) == str(daily_data['날짜']):
-            return
         else:
+            for x in range(len(rows)):
+                if key['key'] == rows[x][0] and str(rows[x][1]) == str(daily_data['날짜']):
+                    sql = """
+                    UPDATE `sports`.`daily_record` SET `No` = %(No)s, `날짜` = %(날짜)s, `타석` = %(타석)s, `타수` = %(타수)s, `안타` = %(안타)s, `2루타` = %(2루타)s, `3루타` = %(3루타)s, `홈런` = %(홈런)s, `타점` = %(타점)s, `득점` = %(득점)s, `도루` = %(도루)s, `사사구` = %(사사구)s, `삼진` = %(삼진)s, `타율` = %(타율)s, `출루율` = %(출루율)s, `장타율` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s and `날짜` =%(날짜)s
+                    """
+                    curs.execute(query=sql,
+                                 args={'No': key['key'], '날짜': daily_data['날짜'], '상대': daily_data['상대'], '타석': daily_data['타석'], '타수': daily_data['타수'],
+                                       '안타': daily_data['안타'], '2루타': daily_data['2타'], '3루타': daily_data['3타'],
+                                       '홈런': daily_data['홈런'], '타점': daily_data['타점'], '득점': daily_data['득점'],
+                                       '도루': daily_data['도루'], '사사구': daily_data['사사구'], '삼진': daily_data['삼진'],
+                                       '타율': daily_data['타율'], '출루율': daily_data['출루율'], '장타율': daily_data['장타율'],
+                                       'OPS': daily_data['OPS'], 'No': key['key'], '날짜': daily_data['날짜']})
+
+                    tmp.commit()
+                    return
+
             sql = """
             INSERT INTO `sports`.`daily_record` (`No`, `날짜`, `상대`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(No)s, %(날짜)s, %(상대)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
             """
@@ -253,7 +262,17 @@ class basic():
         tmp.commit()
 
 if __name__ == '__main__':
-    a = basic()
+    na = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
+          'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778542']
+
+    park = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778528',
+            'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778528']
+
+    lee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10018',
+           'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10018']
+
+
+    a = basic(lee)
 
     a.crawl_profile()
     a.crawl_daily()

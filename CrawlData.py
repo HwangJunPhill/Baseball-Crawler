@@ -45,7 +45,7 @@ class basic():
 
         if len(rows) == 0:
             sql = """
-                    INSERT INTO `sports`.`profile` (`이름`, `배번`, `데뷔`, `출생`, `포지션`, `신체`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+                    INSERT INTO `sports`.`profile` (`Name`, `Number`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
                     """
 
             curs.execute(query=sql,
@@ -61,7 +61,7 @@ class basic():
                 return
 
         sql = """
-        INSERT INTO `sports`.`profile` (`이름`, `배번`, `데뷔`, `출생`, `포지션`, `신체`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+        INSERT INTO `sports`.`profile` (`Name`, `Number`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
         """
 
         curs.execute(query=sql,
@@ -82,11 +82,15 @@ class basic():
             titles = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/table/thead/tr/th[{}]'.format(x))
             values = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/table/tbody/tr/td[{}]'.format(x))
 
-            if titles:
+            if titles == []:
+                return
+            else:
                 season_data[titles[0].text] = values[0].text.strip()
 
     # 시즌 기록 DB 삽입
     def db_season(self):
+        if season_data == {}:
+            return
 
         sql = 'select * from `sports`.`season_record`'
         curs.execute(sql)
@@ -94,7 +98,7 @@ class basic():
 
         if len(rows) == 0:
             sql = """
-            INSERT INTO `sports`.`season_record` (`경기`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+            INSERT INTO `sports`.`season_record` (`G`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
             """
 
             curs.execute(query=sql,
@@ -108,7 +112,7 @@ class basic():
             for x in range(len(rows)):
                 if key['key'] == rows[x][0]:
                     sql = """
-                    UPDATE `sports`.`season_record` SET `경기` = %(경기)s, `타석` = %(타석)s, `타수` = %(타수)s, `안타` = %(안타)s, `2루타` = %(2루타)s, `3루타` = %(3루타)s, `홈런` = %(홈런)s, `타점` = %(타점)s, `득점` = %(득점)s, `도루` = %(도루)s, `사사구` = %(사사구)s, `삼진` = %(삼진)s, `타율` = %(타율)s, `출루율` = %(출루율)s, `장타율` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
+                    UPDATE `sports`.`season_record` SET `G` = %(경기)s, `PA` = %(타석)s, `AB` = %(타수)s, `H` = %(안타)s, `2B` = %(2루타)s, `3B` = %(3루타)s, `HR` = %(홈런)s, `RBI` = %(타점)s, `R` = %(득점)s, `SB` = %(도루)s, `BB` = %(사사구)s, `SO` = %(삼진)s, `AVG` = %(타율)s, `OBA` = %(출루율)s, `SA` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
                     """
 
                     curs.execute(query=sql,
@@ -123,7 +127,7 @@ class basic():
                     return
 
         sql = """
-                    INSERT INTO `sports`.`season_record` (`경기`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+                    INSERT INTO `sports`.`season_record` (`G`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
                     """
 
         curs.execute(query=sql,
@@ -142,19 +146,23 @@ class basic():
             titles = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/div[1]/table/thead/tr/th[{}]'.format(x))
             values = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/div[1]/table/tbody/tr[1]/td[{}]'.format(x))
 
-            if titles:
+            if titles == []:
+                return
+            else:
                 daily_data[titles[0].text] = values[0].text.strip()
 
     # 일일 기록 DB 삽입
     def db_daily(self):
         print('key:', key['key'])
+        if daily_data == {}:
+            return
         sql = 'select * from `sports`.`daily_record`'
         curs.execute(sql)
         rows = curs.fetchall()
 
         if len(rows) == 0:
             sql = """
-            INSERT INTO `sports`.`daily_record` (`No`, `날짜`, `상대`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(No)s, %(날짜)s, %(상대)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+            INSERT INTO `sports`.`daily_record` (`No`, `Date`, `Opponent`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(No)s, %(날짜)s, %(상대)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
             """
 
             curs.execute(query=sql,
@@ -173,7 +181,7 @@ class basic():
             for x in range(len(rows)):
                 if key['key'] == rows[x][0] and str(rows[x][1]) == str(daily_data['날짜']):
                     sql = """
-                    UPDATE `sports`.`daily_record` SET `No` = %(No)s, `날짜` = %(날짜)s, `타석` = %(타석)s, `타수` = %(타수)s, `안타` = %(안타)s, `2루타` = %(2루타)s, `3루타` = %(3루타)s, `홈런` = %(홈런)s, `타점` = %(타점)s, `득점` = %(득점)s, `도루` = %(도루)s, `사사구` = %(사사구)s, `삼진` = %(삼진)s, `타율` = %(타율)s, `출루율` = %(출루율)s, `장타율` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s and `날짜` =%(날짜)s
+                    UPDATE `sports`.`daily_record` SET `No` = %(No)s, `Date` = %(날짜)s, `Opponent` = %(상대)s, `PA` = %(타석)s, `AB` = %(타수)s, `H` = %(안타)s, `2B` = %(2루타)s, `3B` = %(3루타)s, `HR` = %(홈런)s, `RBI` = %(타점)s, `R` = %(득점)s, `SB` = %(도루)s, `BB` = %(사사구)s, `SO` = %(삼진)s, `AVG` = %(타율)s, `OBA` = %(출루율)s, `SA` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s and `Date` =%(날짜)s
                     """
                     curs.execute(query=sql,
                                  args={'No': key['key'], '날짜': daily_data['날짜'], '상대': daily_data['상대'], '타석': daily_data['타석'], '타수': daily_data['타수'],
@@ -187,7 +195,7 @@ class basic():
                     return
 
             sql = """
-            INSERT INTO `sports`.`daily_record` (`No`, `날짜`, `상대`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(No)s, %(날짜)s, %(상대)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+            INSERT INTO `sports`.`daily_record` (`No`, `Date`, `Opponent`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(No)s, %(날짜)s, %(상대)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
             """
 
             curs.execute(query=sql,
@@ -215,7 +223,7 @@ class basic():
 
         if len(rows) == 0:
             sql = """
-            INSERT INTO `sports`.`total_record` (`경기`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+            INSERT INTO `sports`.`total_record` (`G`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
             """
 
             curs.execute(query=sql,
@@ -234,7 +242,7 @@ class basic():
             for x in range(len(rows)):
                 if key['key'] == rows[x][0]:
                     sql = """
-                    UPDATE `sports`.`total_record` SET `경기` = %(경기)s, `타석` = %(타석)s, `타수` = %(타수)s, `안타` = %(안타)s, `2루타` = %(2루타)s, `3루타` = %(3루타)s, `홈런` = %(홈런)s, `타점` = %(타점)s, `득점` = %(득점)s, `도루` = %(도루)s, `사사구` = %(사사구)s, `삼진` = %(삼진)s, `타율` = %(타율)s, `출루율` = %(출루율)s, `장타율` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
+                    UPDATE `sports`.`total_record` SET `G` = %(경기)s, `PA` = %(타석)s, `AB` = %(타수)s, `H` = %(안타)s, `2B` = %(2루타)s, `3B` = %(3루타)s, `HR` = %(홈런)s, `RBI` = %(타점)s, `R` = %(득점)s, `SB` = %(도루)s, `BB` = %(사사구)s, `SO` = %(삼진)s, `AVG` = %(타율)s, `OBA` = %(출루율)s, `SA` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
                     """
 
                     curs.execute(query=sql,
@@ -249,7 +257,7 @@ class basic():
                     return
 
         sql = """
-        INSERT INTO `sports`.`total_record` (`경기`, `타석`, `타수`, `안타`, `2루타`, `3루타`, `홈런`, `타점`, `득점`, `도루`, `사사구`, `삼진`, `타율`, `출루율`, `장타율`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
+        INSERT INTO `sports`.`total_record` (`G`, `PA`, `AB`, `H`, `2B`, `3B`, `HR`, `RBI`, `R`, `SB`, `BB`, `SO`, `AVG`, `OBA`, `SA`, `OPS` ) VALUES (%(경기)s, %(타석)s, %(타수)s, %(안타)s, %(2루타)s, %(3루타)s, %(홈런)s, %(타점)s, %(득점)s, %(도루)s, %(사사구)s, %(삼진)s, %(타율)s, %(출루율)s, %(장타율)s, %(OPS)s)
         """
 
         curs.execute(query=sql,
@@ -262,17 +270,23 @@ class basic():
         tmp.commit()
 
 if __name__ == '__main__':
-    na = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
+    sbna = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
           'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778542']
 
-    park = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778528',
+    mwpark = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778528',
             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778528']
 
-    lee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10018',
+    yklee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10018',
            'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10018']
 
+    wskim = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=433981',
+           'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=433981']
 
-    a = basic(lee)
+    dhlee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=9889',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=9889']
+
+
+    a = basic(dhlee)
 
     a.crawl_profile()
     a.crawl_daily()

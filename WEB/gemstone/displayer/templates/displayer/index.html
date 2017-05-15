@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% if profile_list %}
+    <ul>
+        {% for profile in profile_list %}
+        <li><a href = '/displayer/{{profile.no}}/'>{{profile.name}}</a></li>
+        {{profile.body}}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>There is nothing</p>
+{% endif %}

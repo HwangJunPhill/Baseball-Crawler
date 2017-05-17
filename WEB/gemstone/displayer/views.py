@@ -18,7 +18,14 @@ def index(request):
 
 def data(request, profile_id):
     profile = get_object_or_404(Profile, pk=profile_id)
-    season = SeasonRecord.objects.all().order_by('-no')[:5]
-    context = {'profile': profile, 'season':season}
+    seasons = get_object_or_404(SeasonRecord, pk=profile_id)
+    context = {'profile': profile, 'season':seasons}
 
     return render(request, 'displayer/data.html', context)
+
+# def data(request, profile_id):
+#     profile = get_object_or_404(Profile, pk=profile_id)
+#     seasons = SeasonRecord.objects.all().order_by('-no')[:5]
+#     context = {'profile': profile, 'season':seasons}
+#
+#     return render(request, 'displayer/data.html', context)

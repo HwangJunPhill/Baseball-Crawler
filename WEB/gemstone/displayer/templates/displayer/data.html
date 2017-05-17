@@ -20,11 +20,39 @@
 
 <table align="left" border="1">
     <tr>
-        <td>타율</td>
+        <td>경기</td>
+        <td>타석</td>
+        <td>타수</td>
+        <td>안타</td>
+        <td>2루타</td>
+        <td>3루타</td>
+        <td>홈런</td>
         <td>타점</td>
+        <td>득점</td>
+        <td>도루</td>
+        <td>사사구</td>
+        <td>삼진</td>
+        <td>타율</td>
+        <td>출루율</td>
+        <td>장타율</td>
+        <td>OPS</td>
     </tr>
     <tr>
-        <td>{{ season.avg }}</td>
+        <td>{{ season.g }}</td>
+        <td>{{ season.pa }}</td>
+        <td>{{ season.ab }}</td>
+        <td>{{ season.h }}</td>
+        <td>{{ season.number_2b }}</td>
+        <td>{{ season.number_3b }}</td>
+        <td>{{ season.hr }}</td>
         <td>{{ season.rbi }}</td>
+        <td>{{ season.r }}</td>
+        <td>{{ season.sb }}</td>
+        <td>{{ season.bb }}</td>
+        <td>{{ season.so }}</td>
+        <td>{{ season.avg }}</td>
+        <td>{{ season.oba }}</td>
+        <td>{{ season.sa }}</td>
+        <td>{{ season.ops }}</td>
     </tr>
 </table>

@@ -29,6 +29,7 @@ class basic():
     def crawl_profile(self):
         profile['이름'] = self.name
         profile['배번'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong/span[1]')[0].text
+        profile['팀'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong/span[3]')[0].text
 
         for x in range(5):
             profile_label = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[3]/dl[{}]/dt'.format(x))
@@ -45,11 +46,11 @@ class basic():
 
         if len(rows) == 0:
             sql = """
-                    INSERT INTO `sports`.`profile` (`Name`, `Number`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+                    INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
                     """
 
             curs.execute(query=sql,
-                         args={'이름': profile['이름'], '배번': profile['배번'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
+                         args={'이름': profile['이름'], '배번': profile['배번'], '팀': profile['팀'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
                                '신체': profile['신체']})
             tmp.commit()
             key['key'] = 1
@@ -61,20 +62,13 @@ class basic():
                 return
 
         sql = """
-        INSERT INTO `sports`.`profile` (`Name`, `Number`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+        INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
         """
 
         curs.execute(query=sql,
-                     args={'이름': profile['이름'], '배번': profile['배번'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
+                     args={'이름': profile['이름'], '배번': profile['배번'], '팀':profile['팀'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
                            '신체': profile['신체']})
         tmp.commit()
-
-        if len(rows) == 1:
-            key['key'] = 2
-        else:
-            print(rows)
-            print(len(rows))
-            #key['key'] = rows[len(rows)][0]
 
     # 시즌 기록
     def crawl_season(self):
@@ -301,4 +295,3 @@ if __name__ == '__main__':
         a.db_season()
         a.db_total()
 
-    print(season_data)

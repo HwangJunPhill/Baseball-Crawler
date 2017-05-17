@@ -88,7 +88,6 @@ class basic():
             else:
                 season_data[titles[0].text] = values[0].text.strip()
 
-
     # 시즌 기록 DB 삽입
     def db_season(self):
         if season_data == {}:
@@ -181,17 +180,17 @@ class basic():
 
         else:
             for x in range(len(rows)):
-                if key['key'] == rows[x][0] and str(rows[x][1]) == str(daily_data['날짜']):
+                if key['key'] == rows[x][0]:
                     sql = """
-                    UPDATE `sports`.`daily_record` SET `No` = %(No)s, `Date` = %(날짜)s, `Opponent` = %(상대)s, `PA` = %(타석)s, `AB` = %(타수)s, `H` = %(안타)s, `2B` = %(2루타)s, `3B` = %(3루타)s, `HR` = %(홈런)s, `RBI` = %(타점)s, `R` = %(득점)s, `SB` = %(도루)s, `BB` = %(사사구)s, `SO` = %(삼진)s, `AVG` = %(타율)s, `OBA` = %(출루율)s, `SA` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s and `Date` =%(날짜)s
+                    UPDATE `sports`.`daily_record` SET `Date` = %(날짜)s, `Opponent` = %(상대)s, `PA` = %(타석)s, `AB` = %(타수)s, `H` = %(안타)s, `2B` = %(2루타)s, `3B` = %(3루타)s, `HR` = %(홈런)s, `RBI` = %(타점)s, `R` = %(득점)s, `SB` = %(도루)s, `BB` = %(사사구)s, `SO` = %(삼진)s, `AVG` = %(타율)s, `OBA` = %(출루율)s, `SA` = %(장타율)s, `OPS` = %(OPS)s WHERE `No` =%(No)s
                     """
                     curs.execute(query=sql,
-                                 args={'No': key['key'], '날짜': daily_data['날짜'], '상대': daily_data['상대'], '타석': daily_data['타석'], '타수': daily_data['타수'],
+                                 args={'날짜': daily_data['날짜'], '상대': daily_data['상대'], '타석': daily_data['타석'], '타수': daily_data['타수'],
                                        '안타': daily_data['안타'], '2루타': daily_data['2타'], '3루타': daily_data['3타'],
                                        '홈런': daily_data['홈런'], '타점': daily_data['타점'], '득점': daily_data['득점'],
                                        '도루': daily_data['도루'], '사사구': daily_data['사사구'], '삼진': daily_data['삼진'],
                                        '타율': daily_data['타율'], '출루율': daily_data['출루율'], '장타율': daily_data['장타율'],
-                                       'OPS': daily_data['OPS'], 'No': key['key'], '날짜': daily_data['날짜']})
+                                       'OPS': daily_data['OPS'], 'No': key['key']})
 
                     tmp.commit()
                     return
@@ -302,3 +301,4 @@ if __name__ == '__main__':
         a.db_season()
         a.db_total()
 
+    print(season_data)

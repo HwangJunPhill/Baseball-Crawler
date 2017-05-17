@@ -1,11 +1,12 @@
 <h1>{{ profile.number }}</h1>
 <h1>{{ profile.name }}</h1>
+
 <table align="left" border="1">
 <tr>
     <td>포지션</td>
     <td>데뷔</td>
     <td>생년월일</td>
-    <td>신체조건</td>
+    <td>신체</td>
 </tr>
 <tr>
     <td>{{ profile.position }}</td>
@@ -13,4 +14,17 @@
     <td>{{ profile.born }}</td>
     <td>{{ profile.body }}</td>
 </tr>
+</table>
+
+<br/><br/><br/><br/><br/>
+
+<table align="left" border="1">
+    <tr>
+        <td>타율</td>
+        <td>타점</td>
+    </tr>
+    <tr>
+        <td>{{ season.avg }}</td>
+        <td>{{ season.rbi }}</td>
+    </tr>
 </table>

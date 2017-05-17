@@ -19,7 +19,6 @@ from displayer import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #무엇이 문제일까.. 밥먹고 해결하자!
     url(r'^displayer/$', views.index, name='index'),
     url(r'^displayer/(?P<profile_id>\d+)/$', views.data, name='data'),
 ]

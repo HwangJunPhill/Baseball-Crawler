@@ -285,15 +285,18 @@ if __name__ == '__main__':
     dhlee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=9889',
              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=9889']
 
+    player = [sbna,mwpark,yklee,wskim,dhlee]
 
-    a = basic(dhlee)
+    for x in player:
+        a = basic(x)
 
-    a.crawl_profile()
-    a.crawl_daily()
-    a.crawl_season()
-    a.crawl_total()
+        a.crawl_profile()
+        a.crawl_daily()
+        a.crawl_season()
+        a.crawl_total()
 
-    a.db_profile()
-    a.db_daily()
-    a.db_season()
-    a.db_total()
+        a.db_profile()
+        a.db_daily()
+        a.db_season()
+        a.db_total()
+

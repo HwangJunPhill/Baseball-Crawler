@@ -2,7 +2,7 @@
     <ul>
         {% for profile in profile_list %}
         <li><a href = '/displayer/{{profile.no}}/'>{{profile.name}}</a></li>
-        {{profile.body}}
+        <br/>
         {% endfor %}
     </ul>
 {% else %}

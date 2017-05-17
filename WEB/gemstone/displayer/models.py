@@ -73,7 +73,6 @@ class SeasonRecord(models.Model):
 
 
 class TotalRecord(models.Model):
-    key = models.ForeignKey(Profile)
     no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
     g = models.IntegerField(db_column='G', blank=True, null=True)  # Field name made lowercase.
     pa = models.CharField(db_column='PA', max_length=50, blank=True, null=True)  # Field name made lowercase.

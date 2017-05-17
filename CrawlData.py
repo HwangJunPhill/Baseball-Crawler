@@ -78,7 +78,8 @@ class basic():
 
     # 시즌 기록
     def crawl_season(self):
-        for x in range(17):
+
+        for x in range(1, 17):
             titles = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/table/thead/tr/th[{}]'.format(x))
             values = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/table/tbody/tr/td[{}]'.format(x))
 
@@ -86,6 +87,7 @@ class basic():
                 return
             else:
                 season_data[titles[0].text] = values[0].text.strip()
+
 
     # 시즌 기록 DB 삽입
     def db_season(self):
@@ -142,7 +144,7 @@ class basic():
 
     # 일일 기록
     def crawl_daily(self):
-        for x in range(20):
+        for x in range(1,20):
             titles = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/div[1]/table/thead/tr/th[{}]'.format(x))
             values = self.html.xpath('//*[@id="mArticle"]/div/div[3]/div/div[1]/table/tbody/tr[1]/td[{}]'.format(x))
 

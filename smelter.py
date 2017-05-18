@@ -90,8 +90,6 @@ class smelt():
         `hr` = %(홈런)s,  `avg` = %(타율)s, `rbi` = %(타점)s, `sb` = %(도루)s where `name` = %(이름)s
         """
 
-        print(sql)
-        print(stat)
         curs.execute(query=sql,
                      args={'잔여경기': stat['leftgame'], '안타': stat['h'], '홈런': stat['hr'],
                            '타율': stat['avg'], '타점': stat['rbi'], '도루': stat['sb'], '이름':stat['name']})

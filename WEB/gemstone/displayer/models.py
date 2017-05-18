@@ -11,7 +11,7 @@ from django.db import models
 
 
 class DailyRecord(models.Model):
-    no = models.IntegerField(db_column='No', blank=True, null=True)  # Field name made lowercase.
+    no = models.IntegerField(db_column='No', primary_key=True)  # Field name made lowercase.
     date = models.CharField(db_column='Date', max_length=50, blank=True, null=True)  # Field name made lowercase.
     opponent = models.CharField(db_column='Opponent', max_length=50, blank=True, null=True)  # Field name made lowercase.
     pa = models.IntegerField(db_column='PA', blank=True, null=True)  # Field name made lowercase.
@@ -37,6 +37,7 @@ class DailyRecord(models.Model):
 class Profile(models.Model):
     no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    team = models.CharField(db_column='Team', max_length=50)  # Field name made lowercase.
     number = models.CharField(db_column='Number', max_length=50)  # Field name made lowercase.
     debut = models.CharField(db_column='Debut', max_length=50, blank=True, null=True)  # Field name made lowercase.
     born = models.CharField(db_column='Born', max_length=50, blank=True, null=True)  # Field name made lowercase.

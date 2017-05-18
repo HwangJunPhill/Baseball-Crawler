@@ -58,20 +58,6 @@ class smelt():
         stat['rbi'] = round(curec['leftgame'] * (curec['rbi'] / curec['g']) + curec['rbi'])
         stat['sb'] = round(curec['sb'] / curec['g'] * curec['leftgame'] + curec['sb'])
 
-        # print(type(stat['hr']))
-        # print(type(stat['h']))
-        # print(type(stat['avg']))
-        # print(type(stat['rbi']))
-        # print(type(stat['sb']))
-        # print(type(stat['leftgame']))
-
-        # print('남은 출장 기회 : ', curec['leftgame'])
-        # print('에상 안타 수 : ', round(curec['leftgame'] * (curec['h'] / curec['g']) + curec['h']))
-        # print('예상 홈런 수', round(curec['leftgame'] * (curec['hr'] / curec['g']) + curec['hr']))
-        # print('예상 타율', round((curec['leftgame'] * (curec['h'] / curec['g']) + curec['h']) / (curec['leftgame'] * (curec['ab'] / curec['g']) + curec['ab']), 3))
-        # print('예상 타점', round(curec['leftgame'] * (curec['rbi'] / curec['g']) + curec['rbi']))
-        # print('예상 도루', round(curec['sb'] / curec['g'] * curec['leftgame'] + curec['sb']))
-
     def db_smelt(self):
         sql = 'select * from `sports`.`smelt` where name = %(이름)s'
         curs.execute(query=sql, args={'이름':stat['name']})
@@ -98,8 +84,8 @@ class smelt():
 
 
 if __name__ == '__main__':
-    a = smelt()
+    smt = smelt()
     for x in range(1,6):
-        a.get(x)
-        a.calculate()
-        a.db_smelt()
+        smt.get(x)
+        smt.calculate()
+        smt.db_smelt()

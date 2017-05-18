@@ -16,26 +16,21 @@ class smelt():
         self.respose = requests.get(self.url)
         self.html = etree.HTML(self.respose.text)
 
-        self.get()
-
-    def get(self):
+    def get(self, number=1):
         sql = """
-            SELECT * FROM `season_record` WHERE `No` = 1
+            SELECT * FROM `season_record` WHERE `No` = %(번호)s
             """
-        curs.execute(query=sql)
+        curs.execute(query=sql, args={'번호':number})
         rows = curs.fetchall()
 
         sql = """
-            SELECT `Name` FROM `profile` WHERE `No` = 1
+            SELECT `Name` FROM `profile` WHERE `No` = %(번호)s
             """
-        curs.execute(query=sql)
+        curs.execute(query=sql, args={'번호':number})
         name = curs.fetchall()
 
-        print(name[0][0])
+        print(name)
         stat['name'] = name[0][0]
-
-        #딕셔너리에 넣고 알아서 척척
-        #예측 하기
 
         curec['leftgame'] = 144 - self.getleftgame()
         curec['g'] = rows[0][1]
@@ -54,7 +49,6 @@ class smelt():
 
         return round(gamesum/10)
 
-
     def calculate(self):
 
         stat['leftgame'] = curec['leftgame']
@@ -64,6 +58,13 @@ class smelt():
         stat['rbi'] = round(curec['leftgame'] * (curec['rbi'] / curec['g']) + curec['rbi'])
         stat['sb'] = round(curec['sb'] / curec['g'] * curec['leftgame'] + curec['sb'])
 
+        # print(type(stat['hr']))
+        # print(type(stat['h']))
+        # print(type(stat['avg']))
+        # print(type(stat['rbi']))
+        # print(type(stat['sb']))
+        # print(type(stat['leftgame']))
+
         # print('남은 출장 기회 : ', curec['leftgame'])
         # print('에상 안타 수 : ', round(curec['leftgame'] * (curec['h'] / curec['g']) + curec['h']))
         # print('예상 홈런 수', round(curec['leftgame'] * (curec['hr'] / curec['g']) + curec['hr']))
@@ -71,45 +72,36 @@ class smelt():
         # print('예상 타점', round(curec['leftgame'] * (curec['rbi'] / curec['g']) + curec['rbi']))
         # print('예상 도루', round(curec['sb'] / curec['g'] * curec['leftgame'] + curec['sb']))
 
-
     def db_smelt(self):
-        sql = 'select * from `sports`.`smelt`'
-        curs.execute(sql)
+        sql = 'select * from `sports`.`smelt` where name = %(이름)s'
+        curs.execute(query=sql, args={'이름':stat['name']})
         rows = curs.fetchall()
 
         if len(rows) == 0:
-            print('lets go')
-            sql = """
-                    INSERT INTO `sports`.`smelt` (`leftgame`, `name`, `h`, `hr`, `avg`, `rbi`, `sb`) VALUES (%(잔여경기)s, %(이름)s, %(안타)s, %(홈런)s, %(타율)s, %(타점)s, %(도루)s)
-                    """
-
+            print('add')
+            sql = 'INSERT INTO `sports`.`smelt` (`name`) VALUES (%(이름)s)'
             curs.execute(query=sql,
-                         args={'잔여경기': stat['leftgame'], '이름': stat['name'], '안타':stat['h'], '홈런':stat['hr'], '타율':stat['avg'], '타점':['rbi'], '도루':['sb']})
+                         args={'이름': stat['name']})
             tmp.commit()
-            return
 
-        else:
-            for x in range(len(rows)):
-                    sql = """
-                    UPDATE `sports`.`smelt` SET `leftgame` = %(잔여경기)s, `name` = %(이름)s, `h` = %(안타)s, `hr` = %(홈런)s, `avg` = %(타율)s
-                    """
-
-                    curs.execute(query=sql,
-                                 args={'잔여경기': stat['leftgame'], '이름': stat['name'], '안타': stat['h'], '홈런': stat['hr'], '타율':stat['avg']})
-
-                    tmp.commit()
-                    return
 
         sql = """
-                INSERT INTO `sports`.`smelt` (`leftgame`, `name`, `h`, `hr`, `avg`, `rbi`, `sb`) VALUES (%(잔여경기)s, %(이름)s, %(안타)s, %(홈런)s, %(타율)s, %(타점)s, %(도루)s)
-                """
+        UPDATE `sports`.`smelt` SET `leftgame` = %(잔여경기)s, `h` = %(안타)s,
+        `hr` = %(홈런)s,  `avg` = %(타율)s, `rbi` = %(타점)s, `sb` = %(도루)s where `name` = %(이름)s
+        """
 
+        print(sql)
+        print(stat)
         curs.execute(query=sql,
-                     args={'잔여경기': stat['leftgame'], '이름': stat['name'], '안타': stat['h'], '홈런': stat['hr'], '타율': stat['avg'],
-                           '타점': ['rbi'], '도루': ['sb']})
+                     args={'잔여경기': stat['leftgame'], '안타': stat['h'], '홈런': stat['hr'],
+                           '타율': stat['avg'], '타점': stat['rbi'], '도루': stat['sb'], '이름':stat['name']})
+
         tmp.commit()
+
 
 if __name__ == '__main__':
     a = smelt()
-    a.calculate()
-    a.db_smelt()
+    for x in range(1,6):
+        a.get(x)
+        a.calculate()
+        a.db_smelt()

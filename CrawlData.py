@@ -1,6 +1,8 @@
 import requests
 from lxml import etree
 import pymysql
+from bs4 import BeautifulSoup
+import urllib.request
 
 tmp = pymysql.connect(host='localhost', user='root', password='', db='sports', charset='utf8')
 curs = tmp.cursor()
@@ -11,6 +13,7 @@ season_data = {}
 total_data = {}
 daily_data = {}
 profile = {}
+rank = {}
 
 
 class basic():
@@ -24,6 +27,8 @@ class basic():
         self.html2 = etree.HTML(self.respose.text)
 
         self.name = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong')[0].text
+
+
 
     # 프로필
     def crawl_profile(self):
@@ -46,12 +51,13 @@ class basic():
 
         if len(rows) == 0:
             sql = """
-                    INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+                    INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`, `Photo`)
+                     VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s, %(사진)s)
                     """
 
             curs.execute(query=sql,
                          args={'이름': profile['이름'], '배번': profile['배번'], '팀': profile['팀'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
-                               '신체': profile['신체']})
+                               '신체': profile['신체'], '사진':profile['img']})
             tmp.commit()
             key['key'] = 1
             return
@@ -62,12 +68,13 @@ class basic():
                 return
 
         sql = """
-        INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`) VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s)
+        INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`, `Photo`)
+        VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s, %(사진)s)
         """
 
         curs.execute(query=sql,
                      args={'이름': profile['이름'], '배번': profile['배번'], '팀':profile['팀'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
-                           '신체': profile['신체']})
+                           '신체': profile['신체'], '사진':profile['img']})
         tmp.commit()
 
     # 시즌 기록
@@ -264,6 +271,24 @@ class basic():
 
         tmp.commit()
 
+
+    def get_img(self):
+        URL = urllib.request.Request(self.url)
+        data = urllib.request.urlopen(URL).read()
+
+        soup = BeautifulSoup(data, 'html.parser')
+
+        th = soup.findAll('img')
+
+        for x in th:
+            string = x.get('class')
+            if string == None:
+                pass
+            elif len(string) == 2 and string[1] == 'img-player-pic':
+                string = x.get('src')
+                profile['img'] = string
+
+
 if __name__ == '__main__':
     sbna = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
           'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=778542']
@@ -280,7 +305,44 @@ if __name__ == '__main__':
     dhlee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=9889',
              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=9889']
 
-    player = [sbna,mwpark,yklee,wskim,dhlee]
+    tkkim = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=9898',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=9898']
+
+    mhkang = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10036',
+              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10036']
+
+    asson = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10254',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10254']
+
+    sylee = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=434006',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=434006']
+
+    hipark = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=9882',
+              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=9882']
+
+    rosario = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=1216230',
+               'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=1216230']
+
+    gwjeong = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10119',
+               'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10119']
+
+    gmsong = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10196',
+              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10196']
+
+    jhchoi = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10315',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10315']
+
+    jchoi = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10121',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10121']
+
+    gcseo = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10722',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10722']
+
+    bhmin = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10137',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10137']
+
+    player = [sbna,mwpark,yklee,wskim,dhlee, tkkim, mhkang, asson, gcseo, jchoi, jhchoi, gmsong, gwjeong, rosario,
+              hipark, sylee, bhmin]
 
     for x in player:
         a = basic(x)
@@ -289,9 +351,9 @@ if __name__ == '__main__':
         a.crawl_daily()
         a.crawl_season()
         a.crawl_total()
+        a.get_img()
 
         a.db_profile()
         a.db_daily()
         a.db_season()
         a.db_total()
-

@@ -1,6 +1,27 @@
-<h1>{{ profile.team }}  {{ profile.name }}</h1>
-<h1>{{ profile.number }}</h1>
+{% load staticfiles %}
+
+<html>
+<head>
+
+    <title>DISPLAYer</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/data.css' %}">
+
+</head>
+<body>
+
+<img src="" alt="logo" width="128" height="128">
+<h1> <span id="team-name">{{ profile.team }}</span>
+
 <br/>
+
+<span>{{ profile.name }}</span></h1>
+
+<h1>{{ profile.number }}</h1>
+<img src= {{profile.photo}} alt="ID picture" width="120" height="150" >
+
+<br/><br/><br/>
+
 <b>프로필</b>
 <br/><br/>
 <table align="left" border="1">
@@ -238,4 +259,5 @@
     </tr>
 </table>
 <br/><br/><br/><br/><br/>
-
+</body>
+</html>

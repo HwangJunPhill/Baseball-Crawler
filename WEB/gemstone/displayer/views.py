@@ -4,7 +4,7 @@ from displayer.models import Profile, SeasonRecord, TotalRecord, DailyRecord, Sm
 from django.http import JsonResponse
 
 def index(request):
-    profile_list = Profile.objects.all().order_by('-no')[:5]
+    profile_list = Profile.objects.all().order_by('-no')[:20]
     context = {'profile_list': profile_list}
     return render(request, 'displayer/index.html', context)
 

@@ -43,6 +43,7 @@ class Profile(models.Model):
     born = models.CharField(db_column='Born', max_length=50, blank=True, null=True)  # Field name made lowercase.
     position = models.CharField(db_column='Position', max_length=50, blank=True, null=True)  # Field name made lowercase.
     body = models.CharField(db_column='Body', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    photo = models.CharField(db_column='Photo', max_length=500, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

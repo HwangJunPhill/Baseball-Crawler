@@ -95,3 +95,18 @@ class TotalRecord(models.Model):
     class Meta:
         managed = False
         db_table = 'total_record'
+
+
+class Smelt(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(max_length=50, blank=True, null=True)
+    leftgame = models.IntegerField()
+    h = models.IntegerField()
+    hr = models.IntegerField()
+    avg = models.FloatField()
+    rbi = models.IntegerField()
+    sb = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'smelt'

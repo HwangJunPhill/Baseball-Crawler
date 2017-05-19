@@ -1,7 +1,7 @@
 <h1>{{ profile.team }}  {{ profile.name }}</h1>
 <h1>{{ profile.number }}</h1>
 <br/>
-프로필
+<b>프로필</b>
 <br/><br/>
 <table align="left" border="1">
 <tr>
@@ -19,7 +19,7 @@
 </table>
 
 <br/><br/><br/><br/><br/>
-최근 기록
+<b>최근 기록</b>
 <br/><br/>
 <table align="left" border="1">
     <tr>
@@ -63,7 +63,7 @@
     </tr>
 </table>
 <br/><br/><br/><br/><br/>
-2017년 성적
+<b>2017 시즌 성적</b>
 <br/><br/>
 <table align="left" border="1">
     <tr>
@@ -105,8 +105,98 @@
 </table>
 
 <br/><br/><br/><br/><br/>
+<b>2017 시즌 예상 성적</b>
+<br/><br/>
+<table align="left" border="1">
+    <tr>
+        <td>잔여 경기</td>
+        <td>예상 타율</td>
+        <td>예상 안타</td>
+        <td>예상 홈런</td>
+        <td>예상 타점</td>
+        <td>예상 도루</td>
 
-통산 성적
+    </tr>
+    <tr>
+
+        <td>{{ smelt.leftgame }}</td>
+        <td>{{ smelt.avg }}</td>
+        <td>{{ smelt.h }}</td>
+        <td>{{ smelt.hr }}</td>
+        <td>{{ smelt.rbi }}</td>
+        <td>{{ smelt.sb }}</td>
+
+
+    </tr>
+</table>
+<br/><br/><br/><br/>
+
+{% if smelt.avg > 0.412 %}
+    한 시즌 최고타율 신기록 ! <b>{{ smelt.avg }}</b><br/>
+{% elif smelt.avg >= 0.4 %}
+    한 시즌 4할 ! <b>{{ smelt.avg }}</b><br/>
+{% elif smelt.avg >= 0.35 %}
+    3할 5푼 고타율 <b>{{ smelt.avg }}</b><br/>
+{% endif %}
+
+{% if smelt.h > 201 %}
+    한 시즌 최다안타 신기록 ! <b>{{ smelt.h }}</b><br/>
+{% elif smelt.h >= 200 %}
+    한 시즌 200안타 ! <b>{{ smelt.h }}</b><br/>
+{% elif smelt.h >= 100 %}
+    세 자릿수 안타 <b>{{ smelt.h }}</b><br/>
+{% endif %}
+
+{% if smelt.hr > 201 %}
+    한 시즌 최다홈런 신기록 ! <b>{{ smelt.hr }}</b><br/>
+{% elif smelt.hr >= 50 %}
+    한 시즌 50홈런 ! <b>{{ smelt.hr }}</b><br/>
+{% elif smelt.hr >= 40 %}
+    한 시즌 40홈런 ! <b>{{ smelt.hr }}</b><br/>
+{% elif smelt.hr >= 30 %}
+    한 시즌 30홈런 ! <b>{{ smelt.hr }}</b><br/>
+{% elif smelt.hr >= 10 %}
+    두 자릿수 홈런 <b>{{ smelt.hr }}</b><br/>
+{% endif %}
+
+
+{% if smelt.rbi > 146 %}
+    한 시즌 최다타점 신기록 ! <b>{{ smelt.rbi }}</b><br/>
+{% elif smelt.rbi >= 100 %}
+    세 자릿수 타점 ! <b>{{ smelt.rbi }}</b><br/>
+{% endif %}
+
+{% if smelt.sb > 84 %}
+    한 시즌 최다도루 신기록 ! <b>{{ smelt.sb }}</b><br/>
+{% elif smelt.sb >= 50 %}
+    50 도루 ! <b>{{ smelt.sb }}</b><br/>
+{% elif smelt.sb >= 40 %}
+    40 도루 ! <b>{{ smelt.sb }}</b><br/>
+{% elif smelt.sb >= 30 %}
+    30 도루 ! <b>{{ smelt.sb }}</b><br/>
+{% elif smelt.sb >= 10 %}
+    두 자릿수 도루 <b>{{ smelt.sb }}</b><br/>
+{% endif %}
+
+{% if smelt.avg >= 0.3 and smelt.hr >= 30 and smelt.rbi >= 100 %}
+    이승엽의 마지막 꿈, <b>3할 30홈런 100타점</b></br>
+{% endif %}
+
+{% if smelt.hr >= 50 and smelt.sb >= 50 %}
+    이승엽 + 이대형 = <b>50-50</b><br/>
+{% elif smelt.hr >= 40 and smelt.sb >= 40 %}
+    테임즈와 함께 <b>40-40</b><br/>
+{% elif smelt.hr >= 30 and smelt.sb >= 30 %}
+    파워-스피드 최상 <b>30-30</b><br/>
+{% elif smelt.hr >= 20 and smelt.sb >= 20 %}
+    호타준족 <b>20-20</b><br/>
+{% elif smelt.hr >= 10 and smelt.sb >= 10 %}
+    이대호는 못할 <b>10-10</b><br/>
+{% endif %}
+
+<br/><br/>
+
+<b>통산 성적</b>
 <br/><br/>
 <table align="left" border="1">
     <tr>

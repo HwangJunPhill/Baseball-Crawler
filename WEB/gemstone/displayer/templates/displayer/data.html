@@ -10,40 +10,39 @@
 </head>
 <body>
 
-<img src="" alt="logo" width="128" height="128">
-<h1> <span id="team-name">{{ profile.team }}</span>
+<a href = '/displayer/'> <img src="{% static 'picture/logo.png' %}" alt="logo"> </a>
 
-<br/>
+<div class = "profile">
+<img src= {{profile.photo}} alt="ID picture" width="120" height="150" id="profile-picture">
+    <div class="profile-info">
+        <span id="name">{{ profile.name }}</span>
+        <span id="team-number">{{ profile.team }} | {{ profile.number }}</span>
+        <br/>
+        <table id="profile-table" border="1">
+            <tr id = "profile-index">
+                <td>포지션</td>
+                <td>데뷔</td>
+                <td>생년월일</td>
+                <td>신체</td>
+            </tr>
+            <tr id="profile-table-info">
+                <td>{{ profile.position }}</td>
+                <td>{{ profile.debut }}</td>
+                <td>{{ profile.born }}</td>
+                <td>{{ profile.body }}</td>
+            </tr>
+        </table>
+    </div>
 
-<span>{{ profile.name }}</span></h1>
+    <br/><br/><br/>
+</div>
 
-<h1>{{ profile.number }}</h1>
-<img src= {{profile.photo}} alt="ID picture" width="120" height="150" >
-
-<br/><br/><br/>
-
-<b>프로필</b>
+<div class="daily">
+<span id="daily-title">최근 기록</span>
 <br/><br/>
-<table align="left" border="1">
-<tr>
-    <td>포지션</td>
-    <td>데뷔</td>
-    <td>생년월일</td>
-    <td>신체</td>
-</tr>
-<tr>
-    <td>{{ profile.position }}</td>
-    <td>{{ profile.debut }}</td>
-    <td>{{ profile.born }}</td>
-    <td>{{ profile.body }}</td>
-</tr>
-</table>
 
-<br/><br/><br/><br/><br/>
-<b>최근 기록</b>
-<br/><br/>
 <table align="left" border="1">
-    <tr>
+    <tr id = "daily-index">
         <td>날짜</td>
         <td>상대</td>
         <td>타석</td>
@@ -84,10 +83,15 @@
     </tr>
 </table>
 <br/><br/><br/><br/><br/>
-<b>2017 시즌 성적</b>
+</div>
+
+<div class="season">
+<span id="season-title">2017 시즌 성적</span>
 <br/><br/>
+
+
 <table align="left" border="1">
-    <tr>
+    <tr id = "season-index">
         <td>경기</td>
         <td>타석</td>
         <td>타수</td>
@@ -124,12 +128,15 @@
         <td>{{ season.ops }}</td>
     </tr>
 </table>
-
 <br/><br/><br/><br/><br/>
-<b>2017 시즌 예상 성적</b>
+</div>
+
+<div class="smelt">
+<span id="smelt-title">2017 시즌 예상 성적</span>
 <br/><br/>
+
 <table align="left" border="1">
-    <tr>
+    <tr id ="smelt-index">
         <td>잔여 경기</td>
         <td>예상 타율</td>
         <td>예상 안타</td>
@@ -150,7 +157,7 @@
 
     </tr>
 </table>
-<br/><br/><br/><br/>
+<br/><br/><br/>
 
 {% if smelt.avg > 0.412 %}
     한 시즌 최고타율 신기록 ! <b>{{ smelt.avg }}</b><br/>
@@ -200,7 +207,7 @@
 {% endif %}
 
 {% if smelt.avg >= 0.3 and smelt.hr >= 30 and smelt.rbi >= 100 %}
-    이승엽의 마지막 꿈, <b>3할 30홈런 100타점</b></br>
+    이승엽의 마지막 꿈, <b>3할 30홈런 100타점</b><br/>
 {% endif %}
 
 {% if smelt.hr >= 50 and smelt.sb >= 50 %}
@@ -214,13 +221,16 @@
 {% elif smelt.hr >= 10 and smelt.sb >= 10 %}
     이대호는 못할 <b>10-10</b><br/>
 {% endif %}
+<br/><br/>
+</div>
 
+<div class="total">
+
+<span id="total-title">통산 성적</span>
 <br/><br/>
 
-<b>통산 성적</b>
-<br/><br/>
 <table align="left" border="1">
-    <tr>
+    <tr id="total-index">
         <td>경기</td>
         <td>타석</td>
         <td>타수</td>
@@ -259,5 +269,74 @@
     </tr>
 </table>
 <br/><br/><br/><br/><br/>
+</div>
+
+
+
+<span id="stat-title">스탯</span>
+<br/><br/>
+
+<div class = "stat">
+<img id = "char" src="{% static 'picture/character.png  ' %}" alt="char" width="138" height="158">
+    <div class = "stat-index">
+        <img id ="contact" src="{% static 'picture/target.png  ' %}" alt="contact" width="20" height="20">
+
+        {% if stat.contact >= 100 %}
+            <font color = "purple"><strong>컨택트 극상 {{ stat.contact }}</strong></font>
+        {% elif stat.contact >= 90 %}
+            <font color="red">컨택트 최상 {{ stat.contact }}</font>
+        {% elif stat.contact >= 80 %}
+            <font>컨택트 상 {{ stat.contact }}</font>
+        {% elif stat.contact >= 60 %}
+            <font>컨택트 중 {{ stat.contact }}</font>
+        {% elif stat.contact >= 50 %}
+            <font>컨택트 하 {{ stat.contact }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="power" src="{% static 'picture/muscle.png  ' %}" alt="power" width="20" height="20">
+        {% if stat.power >= 100 %}
+            <font color = "purple"><strong>파워 극상 {{ stat.power }}</strong></font>
+        {% elif stat.power >= 90 %}
+            <font color="red">파워 최상 {{ stat.power }}</font>
+        {% elif stat.power >= 80 %}
+            <font>파워 상 {{ stat.power }}</font>
+        {% elif stat.power >= 60 %}
+            <font>파워 중 {{ stat.power }}</font>
+        {% elif stat.power >= 50 %}
+            <font>파워 하 {{ stat.power }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="speed" src="{% static 'picture/run.png  ' %}" alt="speed" width="20" height="20">
+        {% if stat.speed >= 100 %}
+            <font color = "purple"><strong>스피드 극상 {{ stat.speed }}</strong></font>
+        {% elif stat.speed >= 90 %}
+            <font color="red">스피드 최상 {{ stat.speed }}</font>
+        {% elif stat.speed >= 80 %}
+            <font>스피드 상 {{ stat.speed }}</font>
+        {% elif stat.speed >= 60 %}
+            <font>스피드 중 {{ stat.speed }}</font>
+        {% elif stat.speed >= 50 %}
+            <font>스피드 하 {{ stat.speed }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="eye" src="{% static 'picture/eye.png  ' %}" alt="eye" width="20" height="20">
+        {% if stat.eye >= 100 %}
+            <font color = "purple"><strong>선구안 극상 {{ stat.eye }}</strong></font>
+        {% elif stat.eye >= 90 %}
+            <font color="red">선구안 최상 {{ stat.eye }}</font>
+        {% elif stat.eye >= 80 %}
+            <font>선구안 상 {{ stat.eye }}</font>
+        {% elif stat.eye >= 70 %}
+            <font>선구안 중 {{ stat.eye }}</font>
+        {% elif stat.eye >= 50 %}
+            <font>선구안 하 {{ stat.eye }}</font>
+        {% endif %}
+
+    </div>
+    <img id="chart" src="https://chart.googleapis.com/chart?cht=r&chs=250x250&chd=t:{{ stat.contact }},{{ stat.eye }},{{ stat.speed }},{{ stat.power }},{{ stat.contact }}&chl=컨택트|선구안|스피드|파워" alt="chart" width="250" height="250">
+</div>
 </body>
 </html>

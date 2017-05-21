@@ -1,3 +1,82 @@
-#team-name{
-    font-size : 5rem;
+body{
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-bottom: 100px;
+}
+
+#name{
+    font-size : 36px;
+    font-weight: bold;
+}
+
+#team-number, #daily-title, #season-title, #smelt-title, #total-title, #stat-title{
+    font-size : 18px;
+    font-weight: bold;
+}
+
+.profile{
+    position: relative;
+    margin-top: 50px;
+}
+
+.profile-info{
+    position: absolute;
+    top: 0px;
+    left: 158px;
+}
+
+#profile-table{
+    margin-top:10px;
+    width: 150%;
+}
+
+#profile-table-info{
+    height: 62px;
+}
+
+table {
+    border-style: solid;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th{
+}
+
+table, th, td {
+    font-size : 14px;
+    border: 1px solid black;
+    text-align: center;
+    height: 30px;
+
+}
+
+#profile-index, #daily-index, #season-index, #smelt-index, #total-index{
+    font-weight:bold;
+    background-color: #f2f2f2;
+}
+
+.stat{
+    position:relative;
+}
+
+.stat-index{
+    position: absolute;
+    top: 0px;
+    left: 178px;
+}
+
+code{
+    margin: 20px;
+    font-size: 16px;
+}
+
+#char{
+    position: relative;
+}
+
+#chart{
+    position: absolute;
+    top: 0px;
+    left: 500px;
 }

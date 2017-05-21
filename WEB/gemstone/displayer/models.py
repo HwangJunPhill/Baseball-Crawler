@@ -111,3 +111,14 @@ class Smelt(models.Model):
     class Meta:
         managed = False
         db_table = 'smelt'
+
+class Stat(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    contact = models.IntegerField(db_column='Contact', blank=True, null=True)  # Field name made lowercase.
+    power = models.IntegerField(db_column='Power', blank=True, null=True)  # Field name made lowercase.
+    speed = models.IntegerField(db_column='Speed', blank=True, null=True)  # Field name made lowercase.
+    eye = models.IntegerField(db_column='Eye', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'stat'

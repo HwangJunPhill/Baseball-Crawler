@@ -85,7 +85,7 @@ class smelt():
 
 if __name__ == '__main__':
     smt = smelt()
-    for x in range(1,18):
+    for x in range(1,20):
         smt.get(x)
         smt.calculate()
         smt.db_smelt()

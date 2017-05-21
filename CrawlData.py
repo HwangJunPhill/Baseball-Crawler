@@ -14,6 +14,7 @@ total_data = {}
 daily_data = {}
 profile = {}
 rank = {}
+stat = {}
 
 
 class basic():
@@ -50,6 +51,7 @@ class basic():
         rows = curs.fetchall()
 
         if len(rows) == 0:
+            key['key'] = 1
             sql = """
                     INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`, `Photo`)
                      VALUES (%(이름)s, %(배번)s, %(팀)s, %(데뷔)s, %(출생)s, %(포지션)s, %(신체)s, %(사진)s)
@@ -59,13 +61,15 @@ class basic():
                          args={'이름': profile['이름'], '배번': profile['배번'], '팀': profile['팀'], '데뷔': profile['데뷔'], '출생': profile['출생'], '포지션': profile['포지션'],
                                '신체': profile['신체'], '사진':profile['img']})
             tmp.commit()
-            key['key'] = 1
+
             return
 
         for x in range (len(rows)):
             if str(rows[x][1]) == self.name:
                 key['key'] = rows[x][0]
                 return
+
+        key['key'] += 1
 
         sql = """
         INSERT INTO `sports`.`profile` (`Name`, `Number`, `Team`, `Debut`, `Born`, `Position`, `Body`, `Photo`)
@@ -271,8 +275,8 @@ class basic():
 
         tmp.commit()
 
-
-    def get_img(self):
+    # 선수 프로필 사진
+    def crawl_img(self):
         URL = urllib.request.Request(self.url)
         data = urllib.request.urlopen(URL).read()
 
@@ -288,6 +292,111 @@ class basic():
                 string = x.get('src')
                 profile['img'] = string
 
+    #선수 스탯 계산
+    def cal_stat(self):
+        sb = []
+        eye = []
+
+        sb_and_eye = sb_eye(sb, eye)
+
+        sql = 'select * from `sports`.`total_record` where No = %(번호)s'
+        curs.execute(query=sql, args={'번호':key['key']})
+        rows = curs.fetchall()
+
+        stat['contact'] = (round(rows[0][13] * 312.5))
+        stat['power'] = (round(rows[0][15] * 10000 / 52))
+        stat['speed'] = sb_and_eye[0][key['key']-1]
+        stat['eye'] = round(sb_and_eye[1][key['key']-1] * 100)
+
+
+    def db_stat(self):
+        sql = 'select * from `sports`.`stat` where No = %(번호)s'
+        curs.execute(query=sql, args={'번호':key['key']})
+        rows = curs.fetchall()
+
+        if len(rows) == 0:
+            print('add')
+            sql = """
+                insert into `sports`.`stat` (`Contact`, `Power`, `Speed`, `Eye`)
+                values (%(컨택)s, %(파워)s, %(스피드)s, %(선구안)s)
+                """
+            curs.execute(query=sql,
+                         args={'컨택': stat['contact'], '파워': stat['power'], '스피드': stat['speed'], '선구안': stat['eye']})
+
+        else:
+            sql = """
+                update `sports`.`stat` set `Contact` = %(컨택)s, `Power` = %(파워)s, `Speed` = %(스피드)s, `Eye` = %(선구안)s
+                where No = %(번호)s
+                """
+            curs.execute(query=sql, args={'컨택':stat['contact'],'파워': stat['power'], '스피드':stat['speed'], '선구안':stat['eye'], '번호':key['key']})
+
+        tmp.commit()
+
+def sb_eye(list1, list2):
+    sb = []
+    eye = []
+
+    sql = 'select sb, g, bb, so from `sports`.`total_record`'
+    curs.execute(query=sql)
+    t_row = curs.fetchall()
+
+    for x in range(len(t_row)):
+        sb.append(round(t_row[x][0] / t_row[x][1] * 144 * 3))
+
+        if sb[x] >= 70 and sb[x] < 80:
+            sb[x] += 3
+
+        elif sb[x] >= 60 and sb[x] < 70:
+            sb[x] += 10
+
+        elif sb[x] >= 50 and sb[x] < 60:
+            sb[x] += 18
+
+        elif sb[x] >= 40 and sb[x] < 50:
+            sb[x] += 23
+
+        elif sb[x] >= 30 and sb[x] < 40:
+            sb[x] += 28
+
+        elif sb[x] >= 20 and sb[x] < 30:
+            sb[x] += 33
+
+        elif sb[x] >= 10 and sb[x] < 20:
+            sb[x] += 43
+
+        elif sb[x] >= 5 and sb[x] < 10:
+            sb[x] += 48
+        elif sb[x] <= 5:
+            sb[x] += 50
+
+    for x in range(len(t_row)):
+        eye.append(t_row[x][2] / t_row[x][3])
+        if eye[x] >= 0.6 and eye[x] <= 0.7:
+            eye[x] += 0.3
+
+        if eye[x] >= 0.5 and eye[x] <= 0.6:
+            eye[x] += 0.7
+
+        elif eye[x] >= 0.4 and eye[x] < 0.5:
+            eye[x] += 0.10
+
+        elif eye[x] >= 0.3 and eye[x] < 0.4:
+            eye[x] += 0.20
+
+        elif eye[x] >= 0.2 and eye[x] < 0.3:
+            eye[x] += 0.29
+
+        elif eye[x] >= 0.1 and eye[x] < 0.2:
+            eye[x] += 0.39
+
+        elif eye[x] >= 0.1 and eye[x] < 0.0:
+            eye[x] += 0.50
+
+
+    list1 = sb
+    list2 = eye
+
+    return list1, list2
 
 if __name__ == '__main__':
     sbna = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=778542',
@@ -341,9 +450,16 @@ if __name__ == '__main__':
     bhmin = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=10137',
              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=10137']
 
-    player = [sbna,mwpark,yklee,wskim,dhlee, tkkim, mhkang, asson, gcseo, jchoi, jhchoi, gmsong, gwjeong, rosario,
-              hipark, sylee, bhmin]
+    jsha = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=433972',
+            'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=433972']
 
+    hmpark = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=435395',
+              'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=435395']
+
+    player = [sbna,mwpark,yklee,wskim,dhlee, tkkim, mhkang, asson, gcseo, jchoi, jhchoi, gmsong, gwjeong, rosario,
+              hipark, sylee, bhmin, jsha, hmpark]
+
+    test = [yklee]
     for x in player:
         a = basic(x)
 
@@ -351,9 +467,13 @@ if __name__ == '__main__':
         a.crawl_daily()
         a.crawl_season()
         a.crawl_total()
-        a.get_img()
+        a.crawl_img()
+
 
         a.db_profile()
         a.db_daily()
         a.db_season()
         a.db_total()
+
+        a.cal_stat()
+        a.db_stat()

@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, render
-from displayer.models import Profile, SeasonRecord, TotalRecord, DailyRecord, Smelt, Stat
+from displayer.models import Profile, SeasonRecord, TotalRecord, DailyRecord, Smelt, Stat, Pitprofile, Pitprofile
 from django.http import JsonResponse
 
 def index(request):
@@ -20,3 +20,14 @@ def data(request, profile_id):
     context = {'profile': profile, 'season':season, 'total':total, 'daily':daily, 'smelt':smelt, 'stat':stat}
 
     return render(request, 'displayer/data.html', context)
+
+def pindex(request):
+    profile_list = Pitprofile.objects.all().order_by('-no')[:20]
+    context = {'profile_list': profile_list}
+    return render(request, 'displaycher/pindex.html', context)
+
+def pdata(request, pitprofile_id):
+    profile = get_object_or_404(Pitprofile, pk=pitprofile_id)
+    context = {'profile': profile}
+
+    return render(request, 'displaycher/pdata.html', context)

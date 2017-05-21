@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^displayer/$', views.index, name='index'),
     url(r'^displayer/(?P<profile_id>\d+)/$', views.data, name='data'),
+    url(r'^displaycher/$', views.pindex, name='pindex'),
+    url(r'^displaycher/(?P<pitprofile_id>\d+)/$', views.pdata, name='pdata'),
 ]

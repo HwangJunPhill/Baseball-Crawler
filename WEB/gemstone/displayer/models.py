@@ -122,3 +122,19 @@ class Stat(models.Model):
     class Meta:
         managed = False
         db_table = 'stat'
+
+
+class Pitprofile(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    team = models.CharField(db_column='Team', max_length=50)  # Field name made lowercase.
+    number = models.CharField(db_column='Number', max_length=50)  # Field name made lowercase.
+    debut = models.CharField(db_column='Debut', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    born = models.CharField(db_column='Born', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(db_column='Position', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    body = models.CharField(db_column='Body', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    photo = models.CharField(db_column='Photo', max_length=500, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'pitprofile'

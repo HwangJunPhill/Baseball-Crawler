@@ -138,3 +138,103 @@ class Pitprofile(models.Model):
     class Meta:
         managed = False
         db_table = 'pitprofile'
+
+class PitdailyRecord(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    date = models.CharField(db_column='Date', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    opponent = models.CharField(db_column='Opponent', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    w = models.IntegerField(db_column='W', blank=True, null=True)  # Field name made lowercase.
+    l = models.IntegerField(db_column='L', blank=True, null=True)  # Field name made lowercase.
+    s = models.IntegerField(db_column='S', blank=True, null=True)  # Field name made lowercase.
+    hld = models.IntegerField(db_column='HLD', blank=True, null=True)  # Field name made lowercase.
+    ip = models.IntegerField(db_column='IP', blank=True, null=True)  # Field name made lowercase.
+    np = models.IntegerField(db_column='NP', blank=True, null=True)  # Field name made lowercase.
+    h = models.IntegerField(db_column='H', blank=True, null=True)  # Field name made lowercase.
+    hr = models.IntegerField(db_column='HR', blank=True, null=True)  # Field name made lowercase.
+    k = models.IntegerField(db_column='K', blank=True, null=True)  # Field name made lowercase.
+    bb = models.IntegerField(db_column='BB', blank=True, null=True)  # Field name made lowercase.
+    r = models.IntegerField(db_column='R', blank=True, null=True)  # Field name made lowercase.
+    er = models.IntegerField(db_column='ER', blank=True, null=True)  # Field name made lowercase.
+    whip = models.FloatField(db_column='WHIP', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'pitdaily_record'
+
+
+class PitseasonRecord(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    g = models.IntegerField(db_column='G', blank=True, null=True)  # Field name made lowercase.
+    w = models.IntegerField(db_column='W', blank=True, null=True)  # Field name made lowercase.
+    l = models.IntegerField(db_column='L', blank=True, null=True)  # Field name made lowercase.
+    s = models.IntegerField(db_column='S', blank=True, null=True)  # Field name made lowercase.
+    hld = models.IntegerField(db_column='HLD', blank=True, null=True)  # Field name made lowercase.
+    ip = models.FloatField(db_column='IP', blank=True, null=True)  # Field name made lowercase.
+    np = models.IntegerField(db_column='NP', blank=True, null=True)  # Field name made lowercase.
+    h = models.IntegerField(db_column='H', blank=True, null=True)  # Field name made lowercase.
+    hr = models.IntegerField(db_column='HR', blank=True, null=True)  # Field name made lowercase.
+    k = models.IntegerField(db_column='K', blank=True, null=True)  # Field name made lowercase.
+    bb = models.IntegerField(db_column='BB', blank=True, null=True)  # Field name made lowercase.
+    r = models.IntegerField(db_column='R', blank=True, null=True)  # Field name made lowercase.
+    er = models.IntegerField(db_column='ER', blank=True, null=True)  # Field name made lowercase.
+    era = models.FloatField(db_column='ERA', blank=True, null=True)  # Field name made lowercase.
+    whip = models.FloatField(db_column='WHIP', blank=True, null=True)  # Field name made lowercase.
+    qs = models.IntegerField(db_column='QS', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'pitseason_record'
+
+
+class PittotalRecord(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    g = models.IntegerField(db_column='G', blank=True, null=True)  # Field name made lowercase.
+    w = models.IntegerField(db_column='W', blank=True, null=True)  # Field name made lowercase.
+    l = models.IntegerField(db_column='L', blank=True, null=True)  # Field name made lowercase.
+    s = models.IntegerField(db_column='S', blank=True, null=True)  # Field name made lowercase.
+    hld = models.IntegerField(db_column='HLD', blank=True, null=True)  # Field name made lowercase.
+    ip = models.FloatField(db_column='IP', blank=True, null=True)  # Field name made lowercase.
+    np = models.IntegerField(db_column='NP', blank=True, null=True)  # Field name made lowercase.
+    h = models.IntegerField(db_column='H', blank=True, null=True)  # Field name made lowercase.
+    hr = models.IntegerField(db_column='HR', blank=True, null=True)  # Field name made lowercase.
+    k = models.IntegerField(db_column='K', blank=True, null=True)  # Field name made lowercase.
+    bb = models.IntegerField(db_column='BB', blank=True, null=True)  # Field name made lowercase.
+    r = models.IntegerField(db_column='R', blank=True, null=True)  # Field name made lowercase.
+    er = models.IntegerField(db_column='ER', blank=True, null=True)  # Field name made lowercase.
+    era = models.FloatField(db_column='ERA', blank=True, null=True)  # Field name made lowercase.
+    whip = models.FloatField(db_column='WHIP', blank=True, null=True)  # Field name made lowercase.
+    qs = models.IntegerField(db_column='QS', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'pittotal_record'
+
+
+class Pitsmelt(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(max_length=50, blank=True, null=True)
+    leftgame = models.IntegerField()
+    w = models.IntegerField()
+    l = models.IntegerField()
+    s = models.IntegerField()
+    h = models.IntegerField()
+    ip = models.FloatField()
+    k = models.IntegerField()
+    era = models.FloatField()
+    qs = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'pitsmelt'
+
+
+class Pitstat(models.Model):
+    no = models.AutoField(db_column='No', primary_key=True)  # Field name made lowercase.
+    control = models.IntegerField(db_column='Control', blank=True, null=True)  # Field name made lowercase.
+    power = models.IntegerField(db_column='Power', blank=True, null=True)  # Field name made lowercase.
+    physical = models.IntegerField(db_column='Physical', blank=True, null=True)  # Field name made lowercase.
+    def_field = models.IntegerField(db_column='Def', blank=True, null=True)  # Field name made lowercase. Field renamed because it was a Python reserved word.
+
+    class Meta:
+        managed = False
+        db_table = 'pitstat'

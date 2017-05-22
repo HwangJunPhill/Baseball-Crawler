@@ -13,7 +13,6 @@ season_data = {}
 total_data = {}
 daily_data = {}
 profile = {}
-rank = {}
 stat = {}
 
 
@@ -159,7 +158,6 @@ class basic():
 
     # 일일 기록 DB 삽입
     def db_daily(self):
-        print('key:', key['key'])
         if daily_data == {}:
             return
         sql = 'select * from `sports`.`daily_record`'
@@ -456,8 +454,17 @@ if __name__ == '__main__':
     hmpark = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=435395',
               'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=435395']
 
+    thames = ['http://score.sports.media.daum.net/record/baseball/mlb/plrinf_bat_main.daum?person_id=194564',
+              'http://score.sports.media.daum.net/record/baseball/mlb/plrinf_bat_rechist.daum?person_id=194564']
+
+    jwkoo = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=433944',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=433944']
+
+    hskim = ['http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_main.daum?person_id=973446',
+             'http://score.sports.media.daum.net/record/baseball/kbo/plrinf_bat_rechist.daum?person_id=973446']
+
     player = [sbna,mwpark,yklee,wskim,dhlee, tkkim, mhkang, asson, gcseo, jchoi, jhchoi, gmsong, gwjeong, rosario,
-              hipark, sylee, bhmin, jsha, hmpark]
+              hipark, sylee, bhmin, jsha, hmpark, thames, jwkoo, hskim]
 
     test = [yklee]
     for x in player:

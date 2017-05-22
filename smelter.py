@@ -85,7 +85,13 @@ class smelt():
 
 if __name__ == '__main__':
     smt = smelt()
-    for x in range(1,20):
+    sql = """
+        SELECT `No` FROM `profile`
+        """
+    curs.execute(query=sql)
+    rows = curs.fetchall()
+
+    for x in range(1,len(rows)+1):
         smt.get(x)
         smt.calculate()
         smt.db_smelt()

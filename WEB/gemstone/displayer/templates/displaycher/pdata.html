@@ -1,3 +1,349 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-hi
+<html>
+<head>
+
+    <title>DISPLAYer :: {{ profile.name }}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/data.css' %}">
+
+</head>
+<body>
+
+<a href = '/displaycher/'> <img src="{% static 'picture/logo.png' %}" alt="logo"> </a>
+
+<div class = "profile">
+<img src= {{profile.photo}} alt="ID picture" width="120" height="150" id="profile-picture">
+    <div class="profile-info">
+        <span id="name">{{ profile.name }}</span>
+        <span id="team-number">{{ profile.team }} | {{ profile.number }}</span>
+        <br/>
+        <table id="profile-table" border="1">
+            <tr id = "profile-index">
+                <td>포지션</td>
+                <td>데뷔</td>
+                <td>생년월일</td>
+                <td>신체</td>
+            </tr>
+            <tr id="profile-table-info">
+                <td>{{ profile.position }}</td>
+                <td>{{ profile.debut }}</td>
+                <td>{{ profile.born }}</td>
+                <td>{{ profile.body }}</td>
+            </tr>
+        </table>
+    </div>
+    <br/><br/><br/>
+</div>
+
+<div class="daily">
+<span id="daily-title">최근 기록</span>
+<br/><br/>
+
+<table align="left" border="1">
+    <tr id = "daily-index">
+        <td>날짜</td>
+        <td>상대</td>
+        <td>승</td>
+        <td>패</td>
+        <td>세이브</td>
+        <td>홀드</td>
+        <td>이닝</td>
+        <td>투구수</td>
+        <td>피안타</td>
+        <td>피홈런</td>
+        <td>탈삼진</td>
+        <td>사사구</td>
+        <td>실점</td>
+        <td>자책</td>
+        <td>WHIP</td>
+    </tr>
+    <tr>
+        <td>{{ daily.date }}</td>
+        <td>{{ daily.opponent }}</td>
+        <td>{{ daily.w }}</td>
+        <td>{{ daily.l }}</td>
+        <td>{{ daily.s }}</td>
+        <td>{{ daily.hld }}</td>
+        <td>{{ daily.ip }}</td>
+        <td>{{ daily.np }}</td>
+        <td>{{ daily.h }}</td>
+        <td>{{ daily.hr }}</td>
+        <td>{{ daily.k }}</td>
+        <td>{{ daily.bb }}</td>
+        <td>{{ daily.r }}</td>
+        <td>{{ daily.er }}</td>
+        <td>{{ daily.whip }}</td>
+    </tr>
+</table>
+<br/><br/><br/><br/><br/>
+</div>
+
+<div class="season">
+<span id="season-title">2017 시즌 성적</span>
+<br/><br/>
+
+<table align="left" border="1">
+    <tr id = "season-index">
+        <td>경기</td>
+        <td>승</td>
+        <td>패</td>
+        <td>세이브</td>
+        <td>홀드</td>
+        <td>이닝</td>
+        <td>투구수</td>
+        <td>피안타</td>
+        <td>피홈런</td>
+        <td>탈삼진</td>
+        <td>사사구</td>
+        <td>실점</td>
+        <td>자책</td>
+        <td>평균자책</td>
+        <td>WHIP</td>
+        <td>QS</td>
+    </tr>
+    <tr>
+        <td>{{ season.g }}</td>
+        <td>{{ season.w }}</td>
+        <td>{{ season.l }}</td>
+        <td>{{ season.s }}</td>
+        <td>{{ season.hld }}</td>
+        <td>{{ season.ip }}</td>
+        <td>{{ season.np }}</td>
+        <td>{{ season.h }}</td>
+        <td>{{ season.hr }}</td>
+        <td>{{ season.k }}</td>
+        <td>{{ season.bb }}</td>
+        <td>{{ season.r }}</td>
+        <td>{{ season.er }}</td>
+        <td>{{ season.era }}</td>
+        <td>{{ season.whip }}</td>
+        <td>{{ season.qs }}</td>
+    </tr>
+</table>
+<br/><br/><br/><br/><br/>
+</div>
+
+<div class="smelt">
+<span id="smelt-title">2017 시즌 예상 성적</span>
+<br/><br/>
+
+<table align="left" border="1">
+    <tr id ="smelt-index">
+        <td>예상 등판</td>
+        <td>예상 승</td>
+        <td>예상 패</td>
+        <td>예상 세이브</td>
+        <td>예상 홀드</td>
+        <td>예상 이닝</td>
+        <td>예상 삼진</td>
+        <td>예상 평균자책점</td>
+        <td>예상 QS</td>
+
+    </tr>
+    <tr>
+
+        <td>{{ smelt.leftgame }}</td>
+        <td>{{ smelt.w }}</td>
+        <td>{{ smelt.l }}</td>
+        <td>{{ smelt.s }}</td>
+        <td>{{ smelt.h }}</td>
+        <td>{{ smelt.ip }}</td>
+        <td>{{ smelt.k }}</td>
+        <td>{{ smelt.era }}</td>
+        <td>{{ smelt.qs }}</td>
+
+
+    </tr>
+</table>
+<br/><br/><br/><br/>
+
+{% if smelt.w > 30 %}
+    한 시즌 최다승 신기록 ! <b>{{ smelt.w }}</b><br/>
+{% elif smelt.w >= 30 %}
+    한 시즌 30승 ! <b>{{ smelt.w }}</b><br/>
+{% elif smelt.w >= 20 %}
+    한 시즌 20승 ! <b>{{ smelt.w }}</b><br/>
+{% elif smelt.w >= 10 %}
+    한 시즌 10승 ! <b>{{ smelt.w }}</b><br/>
+{% endif %}
+
+{% if smelt.s > 47 %}
+    한 시즌 최다세이브 신기록 ! <b>{{ smelt.s }}</b><br/>
+{% elif smelt.s >= 40 %}
+    한 시즌 40세이브 ! <b>{{ smelt.s }}</b><br/>
+{% elif smelt.s >= 30 %}
+    한 시즌 30세이브 ! <b>{{ smelt.s }}</b><br/>
+{% elif smelt.s >= 20 %}
+    한 시즌 20세이브 ! <b>{{ smelt.s }}</b><br/>
+{% elif smelt.s >= 10 %}
+    한 시즌 10세이브 ! <b>{{ smelt.s }}</b><br/>
+{% endif %}
+
+{% if smelt.h > 37 %}
+    한 시즌 최다홀드 신기록 ! <b>{{ smelt.h }}</b><br/>
+{% elif smelt.h >= 30 %}
+    한 시즌 30홀드 ! <b>{{ smelt.h }}</b><br/>
+{% elif smelt.h >= 20 %}
+    한 시즌 20홀드 ! <b>{{ smelt.h }}</b><br/>
+{% elif smelt.h >= 10 %}
+    한 시즌 10홀드 ! <b>{{ smelt.h }}</b><br/>
+{% endif %}
+
+
+{% if smelt.k > 223 %}
+    한 시즌 최다탈삼진 신기록 ! <b>{{ smelt.k }}</b><br/>
+{% elif smelt.k >= 200 %}
+    한 시즌 200탈삼진 ! <b>{{ smelt.k }}</b><br/>
+{% elif smelt.k >= 100 %}
+    한 시즌 100탈삼진 ! <b>{{ smelt.k }}</b><br/>
+{% endif %}
+
+{% if smelt.era < 0.78 %}
+    한 시즌 최저 평균자책점 신기록 ! <b>{{ smelt.era }}</b><br/>
+{% elif smelt.era <= 1.00 %}
+    한 시즌 0점대 평균자책점 ! <b>{{ smelt.era }}</b><br/>
+{% elif smelt.era <= 2.00 %}
+    한 시즌 1점대 평균자책점 ! <b>{{ smelt.era }}</b><br/>
+{% elif smelt.era <= 3.00 %}
+    한 시즌 2점대 평균자책점 ! <b>{{ smelt.era }}</b><br/>
+{% elif smelt.era <= 4.00 %}
+    한 시즌 3점대 평균자책점 ! <b>{{ smelt.era }}</b><br/>
+{% endif %}
+
+{% if smelt.avg >= 0.3 and smelt.hr >= 30 and smelt.rbi >= 100 %}
+    이승엽의 마지막 꿈, <b>3할 30홈런 100타점</b><br/>
+{% endif %}
+
+{% if smelt.hr >= 50 and smelt.sb >= 50 %}
+    이승엽 + 이대형 = <b>50-50</b><br/>
+{% elif smelt.hr >= 40 and smelt.sb >= 40 %}
+    테임즈와 함께 <b>40-40</b><br/>
+{% elif smelt.hr >= 30 and smelt.sb >= 30 %}
+    파워-스피드 최상 <b>30-30</b><br/>
+{% elif smelt.hr >= 20 and smelt.sb >= 20 %}
+    호타준족 <b>20-20</b><br/>
+{% elif smelt.hr >= 10 and smelt.sb >= 10 %}
+    이대호는 못할 <b>10-10</b><br/>
+{% endif %}
+<br/><br/>
+</div>
+
+
+
+<div class="total">
+
+<span id="total-title">통산 성적</span>
+<br/><br/>
+
+<table align="left" border="1">
+    <tr id="total-index">
+        <td>경기</td>
+        <td>승</td>
+        <td>패</td>
+        <td>세이브</td>
+        <td>홀드</td>
+        <td>이닝</td>
+        <td>투구수</td>
+        <td>피안타</td>
+        <td>피홈런</td>
+        <td>탈삼진</td>
+        <td>사사구</td>
+        <td>실점</td>
+        <td>자책</td>
+        <td>평균자책</td>
+        <td>WHIP</td>
+        <td>QS</td>
+    </tr>
+    <tr>
+
+        <td>{{ total.g }}</td>
+        <td>{{ total.w }}</td>
+        <td>{{ total.l }}</td>
+        <td>{{ total.s }}</td>
+        <td>{{ total.hld }}</td>
+        <td>{{ total.ip }}</td>
+        <td>{{ total.np }}</td>
+        <td>{{ total.h }}</td>
+        <td>{{ total.hr }}</td>
+        <td>{{ total.k }}</td>
+        <td>{{ total.bb }}</td>
+        <td>{{ total.r }}</td>
+        <td>{{ total.er }}</td>
+        <td>{{ total.era }}</td>
+        <td>{{ total.whip }}</td>
+        <td>{{ total.qs }}</td>
+    </tr>
+</table>
+<br/><br/><br/><br/><br/>
+</div>
+
+
+<span id="stat-title">스탯</span>
+<br/><br/>
+
+<div class = "stat">
+<img id = "char" src="{% static 'picture/pitcher.png  ' %}" alt="char" width="138" height="158">
+    <div class = "stat-index">
+        <img id ="contact" src="{% static 'picture/target.png  ' %}" alt="contact" width="20" height="20">
+
+        {% if stat.control >= 100 %}
+            <font color = "purple"><strong>제구 극상 {{ stat.control }}</strong></font>
+        {% elif stat.control >= 90 %}
+            <font color="red">제구 최상 {{ stat.control }}</font>
+        {% elif stat.control >= 80 %}
+            <font>제구 상 {{ stat.control }}</font>
+        {% elif stat.control >= 60 %}
+            <font>제구 중 {{ stat.control }}</font>
+        {% elif stat.control >= 50 %}
+            <font>제구 하 {{ stat.control }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="power" src="{% static 'picture/explosion.png  ' %}" alt="power" width="20" height="20">
+        {% if stat.power >= 100 %}
+            <font color = "purple"><strong>구위 극상 {{ stat.power }}</strong></font>
+        {% elif stat.power >= 90 %}
+            <font color="red">구위 최상 {{ stat.power }}</font>
+        {% elif stat.power >= 80 %}
+            <font>구위 상 {{ stat.power }}</font>
+        {% elif stat.power >= 60 %}
+            <font>구위 중 {{ stat.power }}</font>
+        {% elif stat.power >= 50 %}
+            <font>구위 하 {{ stat.power }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="speed" src="{% static 'picture/muscle.png  ' %}" alt="speed" width="20" height="20">
+        {% if stat.physical >= 100 %}
+            <font color = "purple"><strong>체력 극상 {{ stat.physical }}</strong></font>
+        {% elif stat.physical >= 90 %}
+            <font color="red">체력 최상 {{ stat.physical }}</font>
+        {% elif stat.physical >= 80 %}
+            <font>체력 상 {{ stat.physical }}</font>
+        {% elif stat.physical >= 60 %}
+            <font>체력 중 {{ stat.physical }}</font>
+        {% elif stat.physical >= 0 %}
+            <font>체력 하 {{ stat.physical }}</font>
+        {% endif %}
+
+        <br/><br/>
+        <img id="eye" src="{% static 'picture/glove.png  ' %}" alt="eye" width="20" height="20">
+        {% if stat.def_field >= 100 %}
+            <font color = "purple"><strong>수비 극상 {{ stat.def_field }}</strong></font>
+        {% elif stat.def_field >= 90 %}
+            <font color="red">수비 최상 {{ stat.def_field }}</font>
+        {% elif stat.def_field >= 80 %}
+            <font>수비 상 {{ stat.def_field }}</font>
+        {% elif stat.def_field >= 70 %}
+            <font>수비 중 {{ stat.def_field }}</font>
+        {% elif stat.def_field >= 50 %}
+            <font>수비 하 {{ stat.def_field }}</font>
+        {% endif %}
+
+    </div>
+        <img id="chart" src="https://chart.googleapis.com/chart?cht=r&chs=250x250&chd=t:{{ stat.control }},{{ stat.def_field }},{{ stat.power }},{{ stat.physical }},{{ stat.control }}&chl=제구|수비|구위|체력" alt="chart" width="250" height="250">
+   </div>
+</body>
+
+</html>

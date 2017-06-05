@@ -18,8 +18,7 @@ CREATE TABLE `season_record` (
 	`OPS` DOUBLE NULL DEFAULT NULL,
 	PRIMARY KEY (`No`)
 )
-COMMENT='나성범의 시즌 기록'
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=6
+AUTO_INCREMENT=23
 ;

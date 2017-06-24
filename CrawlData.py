@@ -26,13 +26,11 @@ class basic():
         self.respose = requests.get(self.url2)
         self.html2 = etree.HTML(self.respose.text)
 
-        self.name = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong')[0].text
-
 
 
     # 프로필
     def crawl_profile(self):
-        profile['이름'] = self.name
+        profile['이름'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong')[0].text
         profile['배번'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong/span[1]')[0].text
         profile['팀'] = self.html.xpath('//*[@id="mArticle"]/div/div[2]/div[2]/strong/span[3]')[0].text
 
@@ -64,7 +62,7 @@ class basic():
             return
 
         for x in range (len(rows)):
-            if str(rows[x][1]) == self.name:
+            if str(rows[x][1]) == profile['이름']:
                 key['key'] = rows[x][0]
                 return
 

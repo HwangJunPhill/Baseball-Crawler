@@ -8,7 +8,8 @@
 
 </head>
 <body>
-        <a href = '/displayer/'> <img src="{% static 'picture/pit-logo.png' %}" alt="logo"> </a>
+        <a href = '/displayer/'> <img src="{% static 'picture/pit-logo.png' %}" alt="logo"> </a><br/>
+        ▲▲▲ click logo and goto batter's page ▲▲▲
         <ul>
         {% for profile in profile_list %}
         <li><a href = '/displaycher/{{profile.no}}/'>{{profile.name}}</a></li>

@@ -59,7 +59,7 @@ class smelt():
             gamesum += (int(nowgame[0].text))
 
         return round(gamesum/10)
-
+ 
     def calculate(self):
 
         stat['leftgame'] = curec['leftgame'] + curec['g']

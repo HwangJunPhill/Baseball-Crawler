@@ -13,7 +13,11 @@
 <a href = '/displaycher/'> <img src="{% static 'picture/logo.png' %}" alt="logo"> </a>
 
 <div class = "profile">
-<img src= {{profile.photo}} alt="ID picture" width="120" height="150" id="profile-picture">
+{% if profile.name == "류세진" %}
+    <img src= "{% static 'picture/sejin.png' %}" alt="ID picture" width="120" height="150" id="ryu-profile-picture">
+{% else %}
+    <img src= {{profile.photo}} alt="ID picture" width="120" height="150" id="profile-picture">
+{% endif %}
     <div class="profile-info">
         <span id="name">{{ profile.name }}</span>
         <span id="team-number">{{ profile.team }} | {{ profile.number }}</span>

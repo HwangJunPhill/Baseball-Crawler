@@ -8,12 +8,8 @@
 </head>
 <body>
 
-        <form method="get" action="/search/" class="navbar-form pull-right">
-        <input type="text" id="searchBox" class="input-medium search-query" name="q" placeholder="Search">
-        <input type="submit" class="btn" value="Search" >
-        </form>
-
-        <a href = '/displaycher/'> <img src="{% static 'picture/bat-logo.png' %}" alt="logo"> </a>
+        <a href = '/displaycher/'> <img src="{% static 'picture/bat-logo.png' %}" alt="logo"> </a><br/>
+        ▲▲▲ click logo and goto pitcher's page ▲▲▲
         <ul>
         {% for profile in profile_list %}
         <li><a href = '/displayer/{{profile.no}}/'>{{profile.name}}</a></li>
